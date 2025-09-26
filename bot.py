@@ -20,11 +20,11 @@ if not TOKEN:
 
 
 # Đọc config
-with open("config.json", "r", encoding="utf-8") as f:
-    config = json.load(f)
+TOKEN = os.getenv("TOKEN")
+GUILD_ID = int(os.getenv("GUILD_ID"))
 
-TOKEN = config["token"]
-GUILD_ID = int(config["guild_id"])
+if not TOKEN:
+    raise RuntimeError("⚠️ Chưa có TOKEN trong biến môi trường!"
 
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
@@ -64,3 +64,4 @@ async def say(interaction: discord.Interaction, text: str):
     os.remove(filename)
 
 client.run(TOKEN)
+
