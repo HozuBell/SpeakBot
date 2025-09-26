@@ -24,7 +24,7 @@ TOKEN = os.getenv("TOKEN")
 GUILD_ID = int(os.getenv("GUILD_ID"))
 
 if not TOKEN:
-    raise RuntimeError("⚠️ Chưa có TOKEN trong biến môi trường!"
+    raise RuntimeError("⚠️ Chưa có TOKEN trong biến môi trường!")
 
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
@@ -64,4 +64,5 @@ async def say(interaction: discord.Interaction, text: str):
     os.remove(filename)
 
 client.run(TOKEN)
+
 
