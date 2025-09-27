@@ -5,7 +5,7 @@ import os
 import asyncio
 from dotenv import load_dotenv
 
-# Load biến môi trường từ file .env (chỉ dùng khi chạy local)
+# Load biến môi trường từ file .env (local)
 load_dotenv()
 
 TOKEN = os.getenv("TOKEN")
@@ -20,13 +20,24 @@ tree = app_commands.CommandTree(client)
 
 @client.event
 async def on_ready():
-    if GUILD_ID:
-        await tree.sync(guild=discord.Object(id=GUILD_ID))
-    else:
-        await tree.sync()
-    print(f"✅ Bot đã đăng nhập: {client.user}")
+    try:
+        if GUILD_ID:
+            await tree.sync(guild=discord.Object(id=GUILD_ID))
+            print(f"✅ Slash commands synced to guild {GUILD_ID}")
+        else:
+            await tree.sync()
+            print("✅ Slash commands synced globally (có thể mất vài phút mới hiện)")
+    except Exception as e:
+        print(f"⚠️ Lỗi khi sync slash commands: {e}")
 
-@tree.command(name="say", description="Bot sẽ đọc văn bản bằng TTS", guild=discord.Object(id=GUILD_ID) if GUILD_ID else None)
+    print(f"🤖 Bot đã đăng nhập: {client.user}")
+
+# Lệnh /say
+@tree.command(
+    name="say",
+    description="Bot sẽ đọc văn bản bằng TTS",
+    guild=discord.Object(id=GUILD_ID) if GUILD_ID else None
+)
 async def say(interaction: discord.Interaction, text: str):
     await interaction.response.defer()
 
